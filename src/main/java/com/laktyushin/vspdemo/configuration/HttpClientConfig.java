@@ -7,9 +7,9 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class HttpClientConfig {
 
-    public final String EXTERNAL_URL = "https://example.com";
-    public final String HEADER = "Accept";
-    public final String HEADER_VALUES = "application/json";
+    public static final String EXTERNAL_URL = "https://example.com";
+    public static final String HEADER = "Accept";
+    public static final String HEADER_VALUES = "application/json";
 
     @Bean
     public RestClient restClient() {

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ExternalRequestImpl implements ExternalRequest {
+public class ExternalRequestServiceImpl implements ExternalRequestService {
 
     private final RestClient restClient;
 
@@ -30,7 +30,7 @@ public class ExternalRequestImpl implements ExternalRequest {
 
         } catch (RuntimeException e) {
             return ExternalSearchResult.builder()
-                    .values(List.of()).errorMessage("FAILED_PRECONDITION")
+                    .values(List.of()).errorMessage(e.getMessage())
                     .build();
         }
     }

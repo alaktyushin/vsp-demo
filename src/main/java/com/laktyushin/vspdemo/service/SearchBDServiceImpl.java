@@ -17,22 +17,24 @@ import static com.laktyushin.vspdemo.model.BdIndex.INDEX_C;
 
 @Service
 @AllArgsConstructor
-public class SearchBDImpl implements SearchBD {
+public class SearchBDServiceImpl implements SearchBDService {
 
-    private final ExternalRequestImpl externalRequestImpl;
+    private final ExternalRequestService externalRequestService;
 
     @Override
     public String internalSearch(Request searchRequest) throws ExecutionException, InterruptedException {
 
+        String searchResult = "FAILED_PRECONDITION";
+
         CompletableFuture<ExternalSearchResult> futureOfDbIndexA =
                 CompletableFuture.supplyAsync(
-                        () -> externalRequestImpl.externalServiceSearch(INDEX_A.getIndex(), searchRequest));
+                        () -> externalRequestService.externalServiceSearch(INDEX_A.getIndex(), searchRequest));
         CompletableFuture<ExternalSearchResult> futureOfDbIndexB =
                 CompletableFuture.supplyAsync(
-                        () -> externalRequestImpl.externalServiceSearch(INDEX_B.getIndex(), searchRequest));
+                        () -> externalRequestService.externalServiceSearch(INDEX_B.getIndex(), searchRequest));
         CompletableFuture<ExternalSearchResult> futureOfDbIndexC =
                 CompletableFuture.supplyAsync(
-                        () -> externalRequestImpl.externalServiceSearch(INDEX_C.getIndex(), searchRequest));
+                        () -> externalRequestService.externalServiceSearch(INDEX_C.getIndex(), searchRequest));
 
         CompletableFuture<Void> combinedFuture
                 = CompletableFuture.allOf(futureOfDbIndexA, futureOfDbIndexB, futureOfDbIndexC);
@@ -43,14 +45,14 @@ public class SearchBDImpl implements SearchBD {
                 .map(CompletableFuture::join)
                 .toList();
 
-        for (var result : futures) {
+        for (ExternalSearchResult result : futures) {
             if (!CollectionUtils.isEmpty(result.getValues())) {
                 return result.getValues().get(0);
             }
             if ("NOT_FOUND".equals(result.getErrorMessage())) {
-                return "NOT_FOUND";
+                searchResult = "NOT_FOUND";
             }
         }
-        return "FAILED_PRECONDITION";
+        return searchResult;
     }
 }

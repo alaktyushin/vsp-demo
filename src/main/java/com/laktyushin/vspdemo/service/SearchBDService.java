@@ -4,7 +4,7 @@ import com.laktyushin.vspdemo.model.Request;
 
 import java.util.concurrent.ExecutionException;
 
-public interface SearchBD {
+public interface SearchBDService {
 
     String internalSearch(Request searchRequest) throws ExecutionException, InterruptedException;
 }
