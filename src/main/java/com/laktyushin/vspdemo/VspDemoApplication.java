@@ -9,5 +9,4 @@ public class VspDemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(VspDemoApplication.class, args);
     }
-
 }
