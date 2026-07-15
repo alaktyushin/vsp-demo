@@ -125,7 +125,7 @@ class SimpleMockTest {
         assertTrue(allCf.isDone());
         assertFalse(allCf.isCompletedExceptionally());
 
-        assertEquals("NOT_FOUND", new SearchBDServiceImpl(externalRequestService).internalSearch(request));
+        assertEquals("FAILED_PRECONDITION", new SearchBDServiceImpl(externalRequestService).internalSearch(request));
     }
 
     @Test

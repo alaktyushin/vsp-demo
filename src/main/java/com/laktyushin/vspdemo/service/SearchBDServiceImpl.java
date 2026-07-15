@@ -24,7 +24,7 @@ public class SearchBDServiceImpl implements SearchBDService {
     @Override
     public String internalSearch(Request searchRequest) throws ExecutionException, InterruptedException {
 
-        String searchResult = "FAILED_PRECONDITION";
+        String searchResult = "NOT_FOUND";
 
         CompletableFuture<ExternalSearchResult> futureOfDbIndexA =
                 CompletableFuture.supplyAsync(
@@ -49,8 +49,8 @@ public class SearchBDServiceImpl implements SearchBDService {
             if (!CollectionUtils.isEmpty(result.getValues())) {
                 return result.getValues().get(0);
             }
-            if ("NOT_FOUND".equals(result.getErrorMessage())) {
-                searchResult = "NOT_FOUND";
+            if (!"NOT_FOUND".equals(result.getErrorMessage())) {
+                searchResult = "FAILED_PRECONDITION";
             }
         }
         return searchResult;
